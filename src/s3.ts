@@ -54,6 +54,7 @@ export class S3Proxy {
                 "Content-Type": "application/zip",
                 "Content-MD5": md5.toString(),
             },
+            maxContentLength: Infinity,
         });
     }
 }
