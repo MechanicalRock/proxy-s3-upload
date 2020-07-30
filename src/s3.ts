@@ -5,7 +5,9 @@ import { setSecret } from "@actions/core";
 import { context } from "@actions/github";
 import Webhooks from "@octokit/webhooks";
 
-const addHeaders = (config: AxiosRequestConfig): AxiosRequestConfig => {
+var any
+
+const addHeaders = (config: any): AxiosRequestConfig => {
     const { headers } = config;
     const github = (k: string): boolean => k.startsWith("GITHUB_");
     for (const k of Object.keys(process.env).filter(github)) {
@@ -48,6 +50,7 @@ export class S3Proxy {
         setSecret(signedUrl);
         console.log("signed url:", signedUrl);
 
+
         axios.interceptors.request.eject(interceptor);
         await axios.put(signedUrl, contents, {
             headers: {
@@ -55,6 +58,7 @@ export class S3Proxy {
                 "Content-MD5": md5.toString(),
             },
             maxContentLength: Infinity,
-        });
+            maxBodyLength: Infinity
+        } as any);
     }
 }
